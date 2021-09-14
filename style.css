@@ -1,0 +1,9 @@
+p{
+    text-align: center;
+}
+span{
+    color:white;
+}
+span:hover{
+    color:steelblue;
+}
