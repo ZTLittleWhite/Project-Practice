@@ -1,0 +1,15 @@
+function rot13(str) {
+var newstr = [];
+    for(var i =0 ;i<str.length;++i){
+      if(str.charCodeAt(i)<65||str.charCodeAt(i)>90){
+        newstr.push(str[i]);
+      }else if(str.charCodeAt(i)<=77){
+        newstr.push(String.fromCharCode(str.charCodeAt(i)+13));
+      }else{
+        newstr.push(String.fromCharCode(str.charCodeAt(i)-13));
+      }
+  }
+ return newstr.join('');
+}
+
+rot13("SERR PBQR PNZC");
