@@ -1,0 +1,16 @@
+function palindrome(str) {
+  var arr = str.match(/[0-9a-z]/gi).map(item => item.toLowerCase());
+
+    var middleIndex = Math.ceil((arr.length - 1) / 2);
+
+    for (let i = 0; i < middleIndex; i++) {
+        if (arr[i] != arr[arr.length - 1 - i]) {
+            return false;
+        }
+    }
+  return true;
+}
+
+
+
+palindrome("eye");
