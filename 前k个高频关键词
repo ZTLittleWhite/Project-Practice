@@ -1,0 +1,63 @@
+public class Solution {
+    private class WordState {
+        String word;
+        Set<Integer> reviewsCount;
+        public WordState(String word) {
+            this.word = word;
+            this.reviewsCount = new HashSet<>();
+        }
+    }
+    public List<String> TopkKeywords(int K, String[] keywords, String[] reviews) {
+        // write your code here
+        List<String> res = new ArrayList<>();
+        Set<String> keywordsCol = new HashSet<>();
+        Map<String, WordState> hashWord = new HashMap<>(); 
+        
+        for (int i = 0; i < keywords.length; i++)
+            keywordsCol.add(keywords[i]);
+
+        for (int i = 0; i < reviews.length; i++){
+            String review = reviews[i];
+            
+            review = review.replaceAll("[\\!?,;.]", "").toLowerCase();
+            review = review.replace("[", "");
+            review = review.replace("]", "");
+            String[] words = review.split(" ");
+            
+            for (int j = 0; j < words.length; j++){
+                String word = words[j];
+                if (keywordsCol.contains(word)){
+                    WordState word_state;
+                    if (hashWord.containsKey(word))
+                        word_state = hashWord.get(word);
+                    else
+                        word_state = new WordState(word);
+                    word_state.reviewsCount.add(i);
+                    hashWord.put(word, word_state);
+                }
+            }
+        }
+        PriorityQueue<WordState> pq = new PriorityQueue<WordState>(new Comparator<WordState>() {
+            @Override
+            public int compare(WordState o1, WordState o2) {
+                if (o1.reviewsCount.size() != o2.reviewsCount.size())
+                    return Integer.compare(o2.reviewsCount.size(), o1.reviewsCount.size());
+                else
+                    return o1.word.compareTo(o2.word);
+            }
+        });
+        pq.addAll(hashWord.values());
+
+        if (K > pq.size()){
+            for (int i = 0; i < keywords.length && !pq.isEmpty(); i++)
+                res.add(pq.poll().word);
+        }
+        else{
+            for (int i = 0; i < K; i++){
+                res.add(pq.poll().word);
+            }
+        }
+
+        return res;
+    }
+}
